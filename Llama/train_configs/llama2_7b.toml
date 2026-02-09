@@ -1,0 +1,73 @@
+# torchtitan Config.toml
+# NOTE: this toml config is a preset for 64 A100 GPUs.
+
+[job]
+dump_folder = "./outputs"
+description = "Llama2_7B_pretrain_4M"
+
+[profiling]
+enable_profiling = false
+save_traces_folder = "profile_trace"
+profile_freq = 50
+
+[metrics]
+log_freq = 1
+enable_tensorboard = false
+save_tb_folder = "tb"
+enable_color_printing = false
+enable_wandb = true
+wandb_comment = ""
+
+[model]
+name = "llama2"
+flavor = "7B"
+norm_type = "fused_rmsnorm"
+tokenizer_path = "torchtitan/datasets/tokenizer/tokenizer.model"
+
+[optimizer]
+name = "OLion"
+
+
+lr = 3e-4
+eps = 1e-8
+weight_decay = 0.1
+momentum = 0.95
+momentum_2 = 0.98
+
+
+[training]
+batch_size = 2
+seq_len = 4096
+warmup_steps = 2000
+max_norm = 1.0
+steps = 8192
+val_interval = 100
+data_parallel_degree = -1
+tensor_parallel_degree = 1
+fp8_linear = ""
+compile = false
+dataset = "c4"
+dataset_path = "allenai/c4"
+grad_accumulation_steps = 64
+lr_scheduler_type = "linear"  # 设置为linear decay
+
+[experimental]
+pipeline_parallel_degree = 1
+
+[checkpoint]
+
+enable_checkpoint = true
+folder = "path/llama2_7B"
+interval_type = "steps"
+interval = 100
+model_weights_only = false
+export_dtype = "float32"
+async_mode = "disabled"
+keep_latest_k = 2
+
+[activation_checkpoint]
+mode = "none"
+selective_ac_option = "op"
+
+[comm]
+init_timeout_seconds = 1800  # 30 minutes for initialization

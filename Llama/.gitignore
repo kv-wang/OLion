@@ -1,0 +1,12 @@
+clash-for-lab/
+clash-for-lab/
+*cuda*
+TORCHRUN
+outputs/
+wandb/
+clash-for-lab/ 
+outputs/
+muon_eval/
+muon_sft_model_converted/
+muon_sft_model_converted_permute/
+muon_sft_model_converted_with_rope/
