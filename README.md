@@ -41,7 +41,7 @@ from sign updates.
 ### Installation & Training Scripts
 
 #### nanoGPT Setup
-To begin working with **Short-RL** for the Logic-RL dataset, just run:
+To begin working with **nanoGPT** experiments, just run:
 
 ```bash
 cd nanoGPT
