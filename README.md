@@ -25,22 +25,24 @@
 
 ## Paper Overview
 
-**OLion (Orthogonal Lion)** is a memory-efficient optimizer that combines two complementary implicit biases in a single update:
+Many optimizers can be interpreted as steepest-descent methods under norm-induced geometries, and thus inherit corresponding implicit biases. **We introduce OLion (Orthogonal Lion)**, which combines spectral control from orthogonalized update directions with ℓ∞-style coordinate control from sign updates.
 
-1. **Spectral control** (from **Muon**): orthogonalizing the update direction via Newton–Schulz iterations, yielding a flattened singular-value profile and bounded spectral norm.
-2. **ℓ∞-style coordinate control** (from **Lion**): applying an element-wise sign to the direction, capping each coordinate’s contribution and promoting uniform entrywise magnitudes.
+At each step, we form a Lion-style momentum direction, approximately orthogonalize it via a few Newton–Schulz iterations, and then apply an entrywise sign. This provides an efficient approximation to taking a maximal step over the intersection of the spectral and ℓ∞ constraint sets—a scaled Hadamard-like set for matrix parameters. Concretely:
 
-For matrix-shaped parameters, the intersection of these two geometries corresponds to a **scaled Hadamard-like set** (orthogonal columns with entries ±1/√d). OLion approximates this intersection by **first orthogonalizing the Lion-style momentum direction, then taking its entrywise sign**, plus optional RMS scaling for stable step sizes. As a result, it keeps Muon’s memory efficiency (momentum-level state only) while adding the benefits of sign-based updates.
+1. **Spectral control** (from **Muon**): we orthogonalize the update direction via Newton–Schulz iterations, yielding a flattened singular-value profile and bounded spectral norm.
+2. **ℓ∞-style coordinate control** (from **Lion**): we apply an element-wise sign to the direction, capping each coordinate’s contribution and promoting uniform entrywise magnitudes.
 
-**Highlights:**
+In the implementation, we optionally apply a lightweight magnitude alignment (e.g., RMS scaling) to stabilize effective step sizes across layers and tensor shapes. As a result, OLion preserves Muon’s memory efficiency (momentum-level state only) while incorporating the practical benefits of sign-based updates.
 
-- **Theory**: Convergence is established under a mild diagonal-isotropy assumption on the update signal (empirically verified).
-- **Practice**: OLion matches or outperforms AdamW and Muon on GPT-2 and Llama pretraining, SiT image pretraining, and Llama supervised fine-tuning, and **reduces optimizer mismatch** when fine-tuning AdamW-pretrained checkpoints (e.g., Llama-3.1-8B).
-- **Systems**: Sign updates enable communication-efficient (e.g., 1-bit) distributed training and are friendly to low-precision quantization.
+**Our contributions:**
+
+- **Theory**: Despite the strong nonlinearity of orthogonalization and sign, we prove convergence under a mild, empirically verified diagonal-isotropy assumption.
+- **Practice**: Across large-scale language and vision training—GPT-2 and Llama pretraining, SiT image pretraining, and supervised fine-tuning—we show that OLion matches or outperforms AdamW and Muon under comparable tuning, and it mitigates optimizer mismatch when fine-tuning AdamW-pretrained checkpoints (e.g., Llama-3.1-8B).
+- **Systems**: We note that the sign operation in OLion naturally supports communication-efficient (e.g., 1-bit) distributed training and is friendly to low-precision quantization.
 
 ### Geometry Motivation
 
-The figure below illustrates how Muon and Lion correspond to maximal updates under two norm-induced geometries; OLion seeks an update direction that lies near their intersection (Hadamard as an idealized reference).
+We approach the design through the geometry of intersecting constraints. The figure below illustrates how we view Muon and Lion as maximal-update methods under two norm-induced geometries; their intersection suggests a scaled Hadamard set as an idealized target for matrix-shaped updates, motivating our intersection-seeking design.
 
 <div align="center">
   <img src="images/geometry.png" width="75%" alt="Geometry motivation: spectral vs ℓ∞ and Hadamard ideal"/>
@@ -48,7 +50,7 @@ The figure below illustrates how Muon and Lion correspond to maximal updates und
 
 ### Implicit Bias: Spectral and ℓ∞ Norms
 
-OLion induces both small spectral norm and small ℓ∞ norm during training, while AdamW and Lion favor mainly one or the other. Below: evolution of spectral norm and ℓ∞ norm for representative weight matrices in GPT-2 small pretraining.
+A simple experiment confirms the intended bias intersection: we find that OLion maintains both a small spectral norm and a small ℓ∞ norm during training, whereas other optimizers favor only one of the two. Below we show the evolution of spectral norm and ℓ∞ norm for representative weight matrices in GPT-2 small pretraining.
 
 | Spectral norm (768×768) | Spectral norm (3072×768) |
 |-------------------------|--------------------------|
@@ -62,11 +64,11 @@ OLion induces both small spectral norm and small ℓ∞ norm during training, wh
 
 ## Overview
 
-We introduce **OLion (Orthogonal Lion)**, an efficient and effective optimizer that:
+We propose **OLion (Orthogonal Lion)** as an efficient and effective optimizer that:
 
-- Combines **spectral control** from orthogonalized update directions (Muon-style) with **ℓ∞-style coordinate control** from sign updates (Lion-style).
-- Uses only **momentum-level optimizer state**, matching the memory footprint of Lion/Muon.
-- Improves **pretraining** (GPT-2, Llama-2-7B, SiT) and **supervised fine-tuning** (e.g., Llama-3.1-8B on math/reasoning benchmarks), and mitigates **optimizer mismatch** when fine-tuning AdamW-pretrained models.
+- **Combines** spectral control from orthogonalized update directions (Muon-style) with ℓ∞-style coordinate control from sign updates (Lion-style).
+- **Uses** only momentum-level optimizer state, matching the memory footprint of Lion/Muon.
+- **Improves** pretraining (GPT-2, Llama-2-7B, SiT) and supervised fine-tuning (e.g., Llama-3.1-8B on math/reasoning benchmarks), and mitigates optimizer mismatch when fine-tuning AdamW-pretrained models.
 
 ---
 
