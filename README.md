@@ -1,13 +1,16 @@
 <div align="center">
 
-# OLion
+# [ICML 2026] OLion
 
-**OLion**: Approaching the Hadamard Ideal by Intersecting Spectral and ℓ∞ Implicit Biases
+**[ICML 2026] OLion**: Approaching the Hadamard Ideal by Intersecting Spectral and ℓ∞ Implicit Biases
 
 </div>
 
 <div align="center" style="line-height: 1;">
-    <a href="https://arxiv.org/abs/2602.01105" target="_blank">
+    <a href="https://icml.cc/virtual/2026/poster/62586" target="_blank">
+    <img alt="Conference"
+    src="https://cdn.phototourl.com/free/2026-06-02-99fe1362-8d9d-4bbe-b06a-d215c2873698.jpg"/></a>
+    <a href="https://arxiv.org/abs/2602.01105" target="_blank">![alt text](image.png)
     <img alt="Arxiv"
     src="https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white"/></a>
     <a href="https://github.com/kv-wang/OLion" target="_blank">
@@ -18,6 +21,8 @@
 <br>
 
 ## News
+
+- **[2026/4/30]** Our paper [OLion: Approaching the Hadamard Ideal by Intersecting Spectral and ℓ∞ Implicit Biases](https://icml.cc/virtual/2026/poster/62586) was accepted by ICML 2026.
 
 - **[2026/2/10]** We release our paper [OLion: Approaching the Hadamard Ideal by Intersecting Spectral and ℓ∞ Implicit Biases](https://arxiv.org/abs/2602.01105) (arXiv:2602.01105) and open-source the code.
 
