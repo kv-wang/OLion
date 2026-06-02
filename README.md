@@ -10,7 +10,7 @@
     <a href="https://icml.cc/virtual/2026/poster/62586" target="_blank">
     <img alt="Conference"
     src="https://cdn.phototourl.com/free/2026-06-02-99fe1362-8d9d-4bbe-b06a-d215c2873698.jpg"/></a>
-    <a href="https://arxiv.org/abs/2602.01105" target="_blank">![alt text](image.png)
+    <a href="https://arxiv.org/abs/2602.01105" target="_blank">
     <img alt="Arxiv"
     src="https://img.shields.io/badge/paper-A42C25?style=for-the-badge&logo=arxiv&logoColor=white"/></a>
     <a href="https://github.com/kv-wang/OLion" target="_blank">
